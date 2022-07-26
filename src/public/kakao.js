@@ -1,5 +1,5 @@
 // @ts-check
-
+// client code
 // https://developers.kakao.com/docs/latest/ko/getting-started/sdk-js
 ;(() => {
   Kakao.init(APP_CONFIG.KAKAO_JAVASCRIPT_KEY)

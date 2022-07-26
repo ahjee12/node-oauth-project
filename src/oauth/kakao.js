@@ -46,6 +46,7 @@ function setupKakaoLogin(app) {
     url.searchParams.append('grant_type', 'authorization_code')
     url.searchParams.append('client_id', KAKAO_REST_KEY)
     url.searchParams.append('redirect_uri', KAKAO_REDIRECT_URI)
+    // auth/kakao/callback 페이지가 불렸을 때 query parameter로 딸려오는 값
     url.searchParams.append('code', code)
 
     const kakaoTokenRes = await fetch(url.toString(), {
@@ -55,8 +56,10 @@ function setupKakaoLogin(app) {
       },
     })
 
+    // kakao 유저 프로필을 받아올 수 있는 access token을 발급받을 수 있게 됨
     const accessToken = (await kakaoTokenRes.json()).access_token
 
+    // Authorization으로 해당 access token으로 인증하겠다는 뜻
     const userInfoRes = await fetch('https://kapi.kakao.com/v2/user/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -73,6 +76,8 @@ function setupKakaoLogin(app) {
     const user = await createUserOrLogin({
       platform: 'kakao',
       platformUserId: me.id.toString(),
+      nickname: me.kakao_account.profile,
+      profileImageURL: me.kakao_account.profile.profile_image_url,
     })
     setAccessTokenCookie(res, user.accessToken)
     res.redirect('/')

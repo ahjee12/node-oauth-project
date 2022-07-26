@@ -5,6 +5,7 @@
 
   function addMessageBlock(message, className) {
     const div = document.createElement('div')
+    // 여러개의 className을 넣는 방법
     div.className = `absolute flex top-4 left-4 right-4 rounded text-base text-white items-center justify-center pointer-cursor text-center p-4 ${className}`
     div.innerText = message
     div.addEventListener('click', () => {

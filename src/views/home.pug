@@ -1,4 +1,30 @@
+//- app.js set
 extends base.pug
 
 block contents
-    a(href="/logout") 로그아웃
+    div.p-8
+        div.text-right
+            a.logout.text-sm.text-gray-600(href="/logout") 로그아웃
+        h1.text-2xl.font-bold.text-center 메인 피드
+        //- app.js use
+        //- post.js post
+        form.mt-16(method="POST" action="/posts")
+            div.text-lg.text-center 
+                span.font-bold #{user.nickname || user.email} 
+                span 님
+            div.text-lg.text-center.mb-2 피드에 새 글을 써보세요
+            div.flex.flex-row.justify-center.align-center
+                input.rouned.border-gray-200.p-2(name="content" placeholder="내용을 써보세요")
+                button.rounded.bg-blue-500.p-2.text-white.ml-2 올리기
+
+        //- space : inner tag에 각각 margin 줌
+        div.mt-16.space-y-2
+            //- main.js get render
+            each post in posts 
+                div.flex.flex-row
+                    div.flex-grow
+                        div.text-xs.text-gray-500= post.user.nickname || post.user.email 
+                        div.text-base= post.content 
+                    if user.id === post.userId
+                    form(method="POST" action=`/posts/${post.id}/delete`)
+                        button.rounded.bg-green-300.p-2.text-white 삭제하기
